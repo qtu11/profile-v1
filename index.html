@@ -48,6 +48,40 @@
     <link rel="stylesheet" href="./assets/styles/porn-hub.css">
 
   </head>
+  <style>
+    #notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        #notification.error {
+            background-color: #f44336;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+  
   <body>
     <!-- Refresh loading animation -->
     <div id="PageLoading">
@@ -312,7 +346,7 @@ const checkDevTools = () => {
             devToolsOpen = true;
             alert('Phát hiện DevTools đang mở! Vui lòng đóng DevTools để tiếp tục.');
             // Có thể thêm hành động như làm mờ trang hoặc chuyển hướng
-            document.body.style.filter = 'blur(5px)';
+            document.body.style.filter = 'blur(0px)';
         }
     } else {
         devToolsOpen = false;
@@ -323,4 +357,31 @@ const checkDevTools = () => {
 // Kiểm tra định kỳ
 setInterval(checkDevTools, 1000);
   </script>
+  <div id="notification">Đã bật nhạc</div>
+    <script>
+        document.addEventListener('click', function() {
+            // Tạo đối tượng Audio với liên kết âm thanh
+            const audio = new Audio('https://files.catbox.moe/wf9ppm.mp3');
+            audio.volume = 0.5; // Đặt âm lượng là 0.5 (từ 0.0 đến 1.0)
+
+            // Hiển thị thông báo
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(function() {
+                notification.classList.remove('show');
+            }, 2000); // Ẩn thông báo sau 2 giây
+
+            // Phát âm thanh sau 0.5 giây
+            setTimeout(function() {
+                audio.play().catch(function(error) {
+                    console.log("Lỗi khi phát âm thanh: ", error);
+                    notification.textContent = "Lỗi khi phát âm thanh";
+                    notification.classList.add('error', 'show');
+                    setTimeout(function() {
+                        notification.classList.remove('show', 'error');
+                    }, 2000);
+                });
+            }, 500); // 500ms = 0.5 giây
+        }, { once: true }); // Chỉ chạy một lần khi nhấp
+    </script>
 </html>
