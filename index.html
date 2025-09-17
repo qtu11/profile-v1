@@ -363,6 +363,7 @@ setInterval(checkDevTools, 1000);
             // Tạo đối tượng Audio với liên kết âm thanh
             const audio = new Audio('https://files.catbox.moe/wf9ppm.mp3');
             audio.volume = 0.5; // Đặt âm lượng là 0.5 (từ 0.0 đến 1.0)
+            audio.loop = true; // Bật chế độ lặp lại vô hạn
 
             // Hiển thị thông báo
             const notification = document.getElementById('notification');
